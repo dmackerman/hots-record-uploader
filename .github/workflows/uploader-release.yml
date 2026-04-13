@@ -41,7 +41,7 @@ jobs:
 
       # Import the Developer ID certificate on macOS so codesign can find it
       - name: Import signing certificate (macOS only)
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS' && env.CERTIFICATE_P12_BASE64 != ''
         env:
           CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
           CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
