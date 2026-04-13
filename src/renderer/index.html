@@ -51,10 +51,13 @@
       <!-- Status view: shown when configured and watching -->
       <div id="status-view" class="view hidden">
         <h1>HoTS Replay Uploader</h1>
+        <span class="version"></span>
 
         <div id="state-indicator" class="state-indicator">
-          <span class="state-dot"></span>
-          <span id="state-text">Waiting for new replays...</span>
+          <div class="flex">
+            <span class="state-dot"></span>
+            <span id="state-text">Waiting for new replays...</span>
+          </div>
           <span class="subtitle"
             >After your Heroes session is over, new replays will be automatically uploaded.</span
           >

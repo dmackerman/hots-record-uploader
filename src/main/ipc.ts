@@ -1,7 +1,7 @@
 /**
  * IPC handlers: bridge between main process and renderer.
  */
-import { ipcMain, dialog, shell } from 'electron';
+import { ipcMain, dialog, shell, app } from 'electron';
 import * as fs from 'fs';
 import Store from 'electron-store';
 
@@ -97,6 +97,10 @@ export function registerIpcHandlers(): void {
       }
     }
   );
+
+  ipcMain.handle('get-version', () => {
+    return app.getVersion();
+  });
 }
 
 export function markFilesUploaded(fileNames: string[]): void {

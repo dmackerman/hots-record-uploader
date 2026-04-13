@@ -10,6 +10,7 @@ interface ElectronAPI {
   clearUploadedCache: () => Promise<void>;
   getUserId: () => Promise<string>;
   validateReplayDir: (dir: string) => Promise<{ valid: boolean; count: number }>;
+  getVersion: () => Promise<string>;
 }
 
 interface StatusUpdate {
@@ -79,6 +80,12 @@ const STATE_COLORS: Record<string, string> = {
 // ── Init ──
 async function init() {
   const settings = await api.getSettings();
+
+  // Display app version
+  const versionEl = document.querySelector('.version');
+  if (versionEl) {
+    versionEl.textContent = `v${await api.getVersion()}`;
+  }
 
   if (settings.battletag) {
     battletagInput.value = settings.battletag;

@@ -49,6 +49,7 @@ h1 {
 .subtitle {
   color: var(--text-muted);
   font-size: 13px;
+  line-height: 1.4;
 }
 
 /* ── Form fields ── */
@@ -213,6 +214,7 @@ button:disabled {
   padding: 16px;
   background: var(--surface);
   border-radius: 8px;
+  border: 1px solid var(--border);
 }
 
 .state-dot {
@@ -289,7 +291,16 @@ button:disabled {
   display: none !important;
 }
 
+.flex {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .view {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   animation: fadeIn 0.2s ease;
 }
 
