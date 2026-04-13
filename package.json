@@ -10,7 +10,10 @@
     "publish": "electron-forge publish",
     "release:tag": "git tag v$(node -p \"require('./package.json').version\")",
     "release:push": "git push origin v$(node -p \"require('./package.json').version\")",
-    "release": "npm run release:tag && npm run release:push"
+    "release": "npm run release:tag && npm run release:push",
+    "bump:patch": "npm version patch && git push --follow-tags",
+    "bump:minor": "npm version minor && git push --follow-tags",
+    "bump:major": "npm version major && git push --follow-tags"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.6.0",
