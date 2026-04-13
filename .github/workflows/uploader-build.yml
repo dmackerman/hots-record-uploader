@@ -1,0 +1,40 @@
+name: Uploader — Build Check
+
+# Runs on every push and PR to confirm the Electron app compiles.
+# Does NOT publish a release. See uploader-release.yml for that.
+
+on:
+  push:
+    paths:
+      - 'uploader/**'
+      - '.github/workflows/uploader-build.yml'
+  pull_request:
+    paths:
+      - 'uploader/**'
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: uploader/package-lock.json
+
+      - name: Install dependencies
+        working-directory: uploader
+        run: npm ci
+
+      - name: Build (make)
+        working-directory: uploader
+        run: npm run make
+        env:
+          # Forge needs this for the DMG maker on macOS
+          SKIP_NOTARIZE: true

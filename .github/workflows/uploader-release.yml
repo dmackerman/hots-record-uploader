@@ -1,0 +1,72 @@
+name: Uploader — Release
+
+# Triggered by pushing a version tag: git tag v0.2.0 && git push origin v0.2.0
+# Builds on macOS + Windows in parallel, then publishes a draft GitHub Release
+# with all artifacts attached. Review and publish the draft on GitHub when ready.
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            label: macOS
+          - os: windows-latest
+            label: Windows
+
+    runs-on: ${{ matrix.os }}
+    name: Build & publish (${{ matrix.label }})
+
+    permissions:
+      contents: write # required to create releases and upload assets
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: uploader/package-lock.json
+
+      - name: Install dependencies
+        working-directory: uploader
+        run: npm ci
+
+      # Import the Developer ID certificate on macOS so codesign can find it
+      - name: Import signing certificate (macOS only)
+        if: runner.os == 'macOS'
+        env:
+          CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          KEYCHAIN=build.keychain
+          security create-keychain -p ci "$KEYCHAIN"
+          security default-keychain -s "$KEYCHAIN"
+          security unlock-keychain -p ci "$KEYCHAIN"
+          echo "$CERTIFICATE_P12_BASE64" | base64 --decode > cert.p12
+          security import cert.p12 -k "$KEYCHAIN" -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k ci "$KEYCHAIN"
+          rm cert.p12
+
+      - name: Publish release
+        working-directory: uploader
+        run: npm run publish
+        env:
+          # GitHub automatically provides this secret — no setup needed.
+          # It has write access to the repo's releases for this workflow run.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # macOS signing — set these secrets in GitHub repo settings.
+          # Leave unset to skip signing (app will trigger Gatekeeper warnings).
+          APPLE_IDENTITY: ${{ secrets.APPLE_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}

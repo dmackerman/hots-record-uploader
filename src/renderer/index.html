@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HoTS Replay Uploader</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Setup view: shown when no battletag configured -->
+      <div id="setup-view" class="view">
+        <h1>HoTS Replay Uploader</h1>
+
+        <div class="field">
+          <label for="battletag-input">BattleTag</label>
+          <input type="text" id="battletag-input" placeholder="Player#1234" spellcheck="false" />
+          <span class="subtitle">Without the #1234 numbers.</span>
+        </div>
+
+        <div class="field">
+          <label for="replay-dir-input">Replay Directory</label>
+          <div class="dir-row">
+            <input type="text" id="replay-dir-input" readonly placeholder="Auto-detecting..." />
+            <button id="browse-btn" type="button">Browse</button>
+          </div>
+          <p id="dir-warning" class="dir-warning hidden"></p>
+        </div>
+
+        <div class="field checkbox-field">
+          <label>
+            <input type="checkbox" id="auto-upload-check" checked />
+            Automatically upload after each game
+          </label>
+        </div>
+
+        <button id="save-btn" class="primary" type="button">Save</button>
+
+        <hr class="settings-divider" />
+        <div class="field">
+          <button id="clear-cache-btn" type="button" class="danger">Clear Upload History</button>
+          <p class="hint">
+            Re-scans all replays on next upload. Use if replays were skipped incorrectly.
+          </p>
+        </div>
+
+        <a id="profile-link" href="#" class="profile-link hidden"
+          >View your profile on hots-record &rarr;</a
+        >
+      </div>
+
+      <!-- Status view: shown when configured and watching -->
+      <div id="status-view" class="view hidden">
+        <h1>HoTS Replay Uploader</h1>
+
+        <div id="state-indicator" class="state-indicator">
+          <span class="state-dot"></span>
+          <span id="state-text">Waiting for new replays...</span>
+          <span class="subtitle"
+            >After your Heroes session is over, new replays will be automatically uploaded.</span
+          >
+        </div>
+
+        <!-- Upload progress -->
+        <div id="progress-section" class="hidden">
+          <div class="progress-bar-wrap">
+            <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+          </div>
+          <p id="progress-text" class="progress-text">Uploading...</p>
+        </div>
+
+        <!-- Last result -->
+        <div id="result-section" class="hidden">
+          <p id="result-text" class="result-text"></p>
+          <a id="stats-link" href="#" class="stats-link">View your stats &rarr;</a>
+        </div>
+
+        <div class="actions">
+          <button id="upload-now-btn" type="button"><strong>Upload Now</strong></button>
+          <button id="settings-btn" type="button">Settings</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
