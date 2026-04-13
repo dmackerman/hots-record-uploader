@@ -13,7 +13,9 @@
     "release": "npm run release:tag && npm run release:push",
     "bump:patch": "npm version patch && git push --follow-tags",
     "bump:minor": "npm version minor && git push --follow-tags",
-    "bump:major": "npm version major && git push --follow-tags"
+    "bump:major": "npm version major && git push --follow-tags",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.6.0",
@@ -22,10 +24,13 @@
     "@electron-forge/maker-zip": "^7.6.0",
     "@electron-forge/plugin-webpack": "^7.6.0",
     "@electron-forge/publisher-github": "^7.11.1",
+    "@types/jest": "^30.0.0",
     "css-loader": "^7.1.2",
     "electron": "^33.0.0",
+    "jest": "^30.3.0",
     "node-loader": "^2.0.0",
     "style-loader": "^4.0.0",
+    "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.1",
     "typescript": "^5.7.0"
   },

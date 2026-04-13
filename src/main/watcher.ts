@@ -83,7 +83,7 @@ function isHotsRunning(): Promise<boolean> {
         resolve(
           lower.includes('heroesofthestorm') ||
             lower.includes('heroes of the storm') ||
-            lower.includes('heroesSwitcher')
+            lower.includes('heroesswitcher')
         );
       });
     } else if (process.platform === 'darwin') {
