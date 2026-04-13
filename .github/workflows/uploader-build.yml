@@ -6,11 +6,19 @@ name: Uploader — Build Check
 on:
   push:
     paths:
-      - 'uploader/**'
+      - 'src/**'
+      - 'package.json'
+      - 'forge.config.js'
+      - 'webpack.*.js'
+      - 'tsconfig.json'
       - '.github/workflows/uploader-build.yml'
   pull_request:
     paths:
-      - 'uploader/**'
+      - 'src/**'
+      - 'package.json'
+      - 'forge.config.js'
+      - 'webpack.*.js'
+      - 'tsconfig.json'
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -26,14 +34,11 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: uploader/package-lock.json
 
       - name: Install dependencies
-        working-directory: uploader
         run: npm ci
 
       - name: Build (make)
-        working-directory: uploader
         run: npm run make
         env:
           # Forge needs this for the DMG maker on macOS

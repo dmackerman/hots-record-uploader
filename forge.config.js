@@ -42,7 +42,7 @@ module.exports = {
     {
       name: '@electron-forge/publisher-github',
       config: {
-        repository: { owner: 'dmackerman', name: 'hots-record' },
+        repository: { owner: 'dmackerman', name: 'hots-record-uploader' },
         prerelease: false,
         draft: true, // creates a draft — review on GitHub before clicking Publish
       },
