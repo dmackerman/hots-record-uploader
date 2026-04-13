@@ -5,6 +5,9 @@
     <!-- Required for Electron's JIT-compiled renderer -->
     <key>com.apple.security.cs.allow-jit</key>
     <true/>
+    <!-- Required for Electron's DYLD injection when hardened runtime is enabled -->
+    <key>com.apple.security.cs.allow-dyld-environment-variables</key>
+    <true/>
     <!-- Allow unsigned executable memory (needed by some Electron internals) -->
     <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
     <true/>

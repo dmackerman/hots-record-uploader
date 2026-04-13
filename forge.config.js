@@ -9,6 +9,7 @@ module.exports = {
     ...(process.env.APPLE_IDENTITY && {
       osxSign: {
         identity: process.env.APPLE_IDENTITY, // e.g. "Developer ID Application: Dave Mackerman (TEAMID)"
+        hardenedRuntime: true, // required for Gatekeeper — without this macOS shows "damaged"
         optionsForFile: () => ({ entitlements: './entitlements.plist' }),
       },
       osxNotarize: {
