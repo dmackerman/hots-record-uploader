@@ -23,6 +23,7 @@ app.isQuitting = false;
 let mainWindow: BrowserWindow | null = null;
 const watcher = new HotsWatcher();
 let lastResult: UploadResult | null = null;
+let activeUploader: ReplayUploader | null = null;
 
 function createWindow(): BrowserWindow {
   const win = new BrowserWindow({
@@ -127,6 +128,7 @@ async function runUploadCycle() {
   );
 
   const uploader = new ReplayUploader(settings.battletag);
+  activeUploader = uploader;
 
   uploader.on('progress', (progress: UploadProgress) => {
     if (mainWindow && !mainWindow.isDestroyed()) {
@@ -141,6 +143,7 @@ async function runUploadCycle() {
   });
 
   const result = await uploader.uploadReplays(newReplays);
+  activeUploader = null;
   lastResult = result;
 
   // Persist userId for profile link
@@ -205,6 +208,13 @@ app.whenReady().then(() => {
     if (watcher.getState() === 'uploading') return;
     watcher.setState('scanning');
     await runUploadCycle();
+  });
+
+  // Handle cancel upload
+  ipcMain.handle('cancel-upload', () => {
+    if (activeUploader) {
+      activeUploader.cancel();
+    }
   });
 
   // Re-start watcher when settings change

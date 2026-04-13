@@ -30,10 +30,15 @@ export interface UploadResult {
 
 export class ReplayUploader extends EventEmitter {
   private battletag: string;
+  private cancelled = false;
 
   constructor(battletag: string) {
     super();
     this.battletag = battletag;
+  }
+
+  cancel(): void {
+    this.cancelled = true;
   }
 
   async uploadReplays(replayPaths: string[]): Promise<UploadResult> {
@@ -45,6 +50,10 @@ export class ReplayUploader extends EventEmitter {
     };
 
     for (let i = 0; i < replayPaths.length; i++) {
+      if (this.cancelled) {
+        break;
+      }
+
       const filePath = replayPaths[i];
       const fileName = path.basename(filePath);
 

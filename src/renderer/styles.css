@@ -224,6 +224,45 @@ button:disabled {
   border-radius: 50%;
   background: #888;
   flex-shrink: 0;
+  position: relative;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 0 0 currentColor;
+}
+
+.state-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: inherit;
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.version {
+  color: var(--text-muted)
 }
 
 #state-text {
@@ -232,6 +271,23 @@ button:disabled {
 }
 
 /* ── Progress ── */
+
+.cancel-btn {
+  margin-top: 8px;
+  padding: 6px 14px;
+  font-size: 12px;
+  background: transparent;
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: 6px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: background 0.15s;
+}
+
+.cancel-btn:hover {
+  background: rgba(244, 67, 54, 0.1);
+}
 
 .progress-bar-wrap {
   height: 6px;
@@ -249,8 +305,9 @@ button:disabled {
 }
 
 .progress-text {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
+  line-height: 1.4;
 }
 
 /* ── Result ── */

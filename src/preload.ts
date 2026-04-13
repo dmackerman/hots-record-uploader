@@ -22,6 +22,7 @@ export interface ElectronAPI {
   getUserId: () => Promise<string>;
   validateReplayDir: (dir: string) => Promise<{ valid: boolean; count: number }>;
   getVersion: () => Promise<string>;
+  cancelUpload: () => Promise<void>;
 }
 
 contextBridge.exposeInMainWorld('electronAPI', {
@@ -37,4 +38,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getUserId: () => ipcRenderer.invoke('get-user-id'),
   validateReplayDir: (dir: string) => ipcRenderer.invoke('validate-replay-dir', dir),
   getVersion: () => ipcRenderer.invoke('get-version'),
+  cancelUpload: () => ipcRenderer.invoke('cancel-upload'),
 } satisfies ElectronAPI);

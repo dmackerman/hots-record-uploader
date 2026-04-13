@@ -11,6 +11,7 @@ interface ElectronAPI {
   getUserId: () => Promise<string>;
   validateReplayDir: (dir: string) => Promise<{ valid: boolean; count: number }>;
   getVersion: () => Promise<string>;
+  cancelUpload: () => Promise<void>;
 }
 
 interface StatusUpdate {
@@ -60,6 +61,8 @@ const statsLink = document.getElementById('stats-link')!;
 const uploadNowBtn = document.getElementById('upload-now-btn')!;
 const settingsBtn = document.getElementById('settings-btn')!;
 const clearCacheBtn = document.getElementById('clear-cache-btn')!;
+const cancelUploadBtn = document.getElementById('cancel-upload-btn')!;
+const stateSubtitle = document.getElementById('state-subtitle')!;
 
 const STATE_LABELS: Record<string, string> = {
   idle: 'Waiting for new replays...',
@@ -176,6 +179,10 @@ uploadNowBtn.addEventListener('click', () => {
   api.uploadNow();
 });
 
+cancelUploadBtn.addEventListener('click', () => {
+  api.cancelUpload();
+});
+
 settingsBtn.addEventListener('click', () => {
   showSetupView();
 });
@@ -226,12 +233,22 @@ function updateStatus(status: StatusUpdate) {
   if (status.state === 'uploading') {
     btn.disabled = true;
     btn.textContent = 'Uploading…';
+    cancelUploadBtn.classList.remove('hidden');
   } else if (status.pendingCount === 0) {
     btn.disabled = true;
     btn.textContent = 'No new replays';
+    cancelUploadBtn.classList.add('hidden');
   } else {
     btn.disabled = false;
     btn.textContent = `Upload Now (${status.pendingCount})`;
+    cancelUploadBtn.classList.add('hidden');
+  }
+
+  // Update subtitle with pending count
+  if (status.state === 'idle' && status.pendingCount > 0) {
+    stateSubtitle.textContent = `${status.pendingCount} new replay${status.pendingCount !== 1 ? 's' : ''} ready to upload.`;
+  } else if (status.state === 'idle') {
+    stateSubtitle.textContent = 'After your Heroes session is over, new replays will be automatically uploaded.';
   }
 
   // Upload progress
@@ -240,7 +257,7 @@ function updateStatus(status: StatusUpdate) {
     const { current, total, fileName, gamesAdded, duplicates, errors } = status.uploadProgress;
     const pct = total > 0 ? Math.round((current / total) * 100) : 0;
     progressBar.style.width = `${pct}%`;
-    progressText.textContent = `Uploading ${current}/${total}: ${fileName}`;
+    progressText.innerHTML = `Uploading ${current}/${total}<br /> <strong>${fileName}</strong>`;
   } else if (status.state !== 'uploading') {
     progressSection.classList.add('hidden');
   }

@@ -9,7 +9,10 @@
     <div id="app">
       <!-- Setup view: shown when no battletag configured -->
       <div id="setup-view" class="view">
-        <h1>HoTS Replay Uploader</h1>
+        <div class="header">
+          <h1>HoTS Replay Uploader</h1>
+          <span class="version"></span>
+        </div>
 
         <div class="field">
           <label for="battletag-input">BattleTag</label>
@@ -50,15 +53,17 @@
 
       <!-- Status view: shown when configured and watching -->
       <div id="status-view" class="view hidden">
-        <h1>HoTS Replay Uploader</h1>
-        <span class="version"></span>
+        <div class="header">
+          <h1>HoTS Replay Uploader</h1>
+          <span class="version"></span>
+        </div>
 
         <div id="state-indicator" class="state-indicator">
           <div class="flex">
             <span class="state-dot"></span>
             <span id="state-text">Waiting for new replays...</span>
           </div>
-          <span class="subtitle"
+          <span id="state-subtitle" class="subtitle"
             >After your Heroes session is over, new replays will be automatically uploaded.</span
           >
         </div>
@@ -69,6 +74,7 @@
             <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
           </div>
           <p id="progress-text" class="progress-text">Uploading...</p>
+          <button id="cancel-upload-btn" type="button" class="cancel-btn">Cancel</button>
         </div>
 
         <!-- Last result -->

@@ -2,7 +2,10 @@
 
 A small open-source desktop app that automatically uploads your [Heroes of the Storm](https://heroesofthestorm.blizzard.com/) replays to [HoTS Record](https://hots.autrpop.com) after every game.
 
-<img width="532" height="632" alt="App screenshot" src="https://github.com/user-attachments/assets/f72fd9d8-58a9-43a9-92b3-87751c72d368" />
+<img width="350" height="auto" alt="image" src="https://github.com/user-attachments/assets/867df7af-610f-47dd-8a00-312cc6fcf02a" />
+
+<img width="350" height="auto" alt="image" src="https://github.com/user-attachments/assets/a7e26b69-1814-49b1-8869-14345688ee9d" />
+
 
 ## How it works
 
